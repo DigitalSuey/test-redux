@@ -1,13 +1,10 @@
-import { createStore, applyMiddleware, compose } from "redux";
 import rootReducer from "../reducers";
 import { forbiddenWordsMiddleware } from "../middleware";
-import thunk from "redux-thunk";
+import { configureStore, getDefaultMiddleware, compose } from 'redux-starter-kit';
 
-const storeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore(
-  rootReducer,
-  storeEnhancers(applyMiddleware(forbiddenWordsMiddleware, thunk))
-);
-
-export default store;
+export default configureStore({
+  reducer: rootReducer,
+  middleware: [...getDefaultMiddleware(), forbiddenWordsMiddleware],
+  devTools: process.env.NODE_ENV !== 'production',
+  enhancers: [ compose ],
+});
